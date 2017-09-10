@@ -5,7 +5,7 @@ import numpy as np
 
 def num_encoder(text):
     """
-    将数字标签文本转化成向量
+    将4位数字标签文本转化成向量
     :param text:            数字字符
     :return:                转化后的numpy array,数据类型为int
     """
@@ -21,13 +21,20 @@ def num_encoder(text):
     return vector
 
 
-def num_decoder(vector):
+def num_decoder(vector, vector_type="label"):
     """
-    将向量转化为数字字符
+    将向量转化为4位数字字符
     :param vector:          numpy array格式的向量
+    :param vector_type:     输入向量的类型,"label"为标签,"pred"为模型预测输出
     :return:                转化后的数字字符,数据类型为string
     """
-    text_list = vector.nonzero()[0]
+    if vector_type == "label":
+        text_list = vector.nonzero()[0]
+    elif vector_type == "pred":
+        text_list = np.argsort(vector)[-4:]
+        text_list.sort()
+    else:
+        raise KeyError("The vector_type must be label or pred!")
     text = []
     for index, value in enumerate(text_list):
         text.append(str(int(value) - index * 10))

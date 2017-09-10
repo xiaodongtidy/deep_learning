@@ -5,7 +5,7 @@ import re
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-from Lin_deep_learning.encoder_decoder import num_encoder
+from encoder_decoder import num_encoder
 
 
 IMAGE_HEIGHT = 60

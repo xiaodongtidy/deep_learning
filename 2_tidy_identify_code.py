@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from Lin_deep_learning.reader import read_jpg_decode
+from reader import read_jpg_decode
+# from Lin_deep_learning.reader import read_jpg_decode
 from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Input, Dropout
 from keras.models import Model
-from keras.optimizers import SGD
-from keras import regularizers
+# from keras.optimizers import SGD
+# from keras import regularizers
 from keras.callbacks import TensorBoard
-from keras.preprocessing.image import ImageDataGenerator
-from keras.applications import Xception
-import tensorflow as tf
+# from keras.preprocessing.image import ImageDataGenerator
+# from keras.applications import Xception
+# import tensorflow as tf
 
 
 # 获取数据
