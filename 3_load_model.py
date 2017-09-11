@@ -20,6 +20,12 @@ model.load_weights("logs/cnn_rmsprop_weights.h5")
 pred_test = model.predict(img_test, batch_size=2, verbose=1)
 
 result = zip(pred_test, label_test)
+error = 0
 for i, l in result:
-    print("预测: ", num_decoder(i, vector_type="pred"))
-    print("实际: ", num_decoder(l))
+    pred = num_decoder(i, vector_type="pred")
+    label = num_decoder(l)
+    if pred != label:
+        print("预测: ", pred, i)
+        print("实际: ", label, l)
+        error += 1
+print(error)

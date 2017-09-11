@@ -5,7 +5,9 @@ import re
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+from io import BytesIO
 from encoder_decoder import num_encoder
+from get_code import get_code
 
 
 IMAGE_HEIGHT = 60
@@ -41,18 +43,6 @@ def read_and_decode(filename, batch_size):
                                            min_after_dequeue=1, capacity=1024)
     return image, tf.reshape(labels, [batch_size])
 
-# 测试read_and_decode
-# img_batch, label_batch = read_and_decode("my_dataset/train.tfrecords")
-# print(img_batch, label_batch)
-# init = tf.global_variables_initializer()
-# with tf.Session() as sess:
-#     sess.run(init)
-#     threads = tf.train.start_queue_runners(sess=sess)
-#     for i in range(15):
-#         print(img_batch.shape, label_batch)
-#         val, l = sess.run([img_batch, label_batch])
-#         print(val.shape, l)
-
 
 def read_jpg_decode(filename, batch_size=None, data_format="channels_last"):
     """
@@ -80,16 +70,22 @@ def read_jpg_decode(filename, batch_size=None, data_format="channels_last"):
             img_array = np.reshape(img_array, (1, 60, 120))
             if data_format == "channels_last":
                 img_array = img_array.transpose((1, 2, 0))
-            elif data_format == "channels_first":
-                pass
-            else:
-                pass
             x_list.append(img_array)
             y_list.append(label_array)
         return np.array(x_list), np.array(y_list)
 
 
-# 测试read_jpg_decode
-# image_x, image_y = read_jpg_decode("/tidy_id_code/small/")
-# print(image_x, image_x.shape)
-# print(image_y, image_y.shape)
+def get_code_decode(data_format="channels_last"):
+    """
+    获取图形验证码流和验证码信息
+    :param data_format:     字符串,为‘channels_first’或‘channels_last’,代表图像的通道维位置
+                            默认为‘channels_last’,数据应该组织为(128, 128, 3)
+    :return:                图像numpy array和标签
+    """
+    res = get_code()
+    img = Image.open(BytesIO(res.content))
+    img_array = np.array(img)
+    img_array = np.reshape(img_array, (1, 1, 60, 120))
+    if data_format == "channels_last":
+        img_array = img_array.transpose((0, 2, 3, 1))
+    return img_array, res.headers["code"]

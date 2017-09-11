@@ -24,25 +24,25 @@ def num_encoder(text):
 def num_decoder(vector, vector_type="label"):
     """
     将向量转化为4位数字字符
-    :param vector:          numpy array格式的向量
+    :param vector:          numpy array格式的向量,长度必须为40
     :param vector_type:     输入向量的类型,"label"为标签,"pred"为模型预测输出
     :return:                转化后的数字字符,数据类型为string
     """
+    if len(vector) != 40:
+        raise KeyError("The input vector's length is not equal to 40")
+    text = []
     if vector_type == "label":
+        # 返回非零元素的索引
         text_list = vector.nonzero()[0]
+        for index, value in enumerate(text_list):
+            # 根据索引值解出验证码的值
+            text.append(str(int(value) - index * 10))
     elif vector_type == "pred":
-        text_list = np.argsort(vector)[-4:]
-        text_list.sort()
+        # 将输入拆分成四个列表,分别得出最大值所在的索引,即为模型的预测输出
+        for i in range(4):
+            pred_list = vector[i * 10:(i + 1) * 10].tolist()
+            text.append(str(pred_list.index(max(pred_list))))
     else:
         raise KeyError("The vector_type must be label or pred!")
-    text = []
-    for index, value in enumerate(text_list):
-        text.append(str(int(value) - index * 10))
-    return "".join(text)
 
-# 测试
-# for a in range(1000, 9999):
-#     b = num_encoder(str(a))
-#     c = num_decoder(b)
-#     print(a)
-#     print(c)
+    return "".join(text)
