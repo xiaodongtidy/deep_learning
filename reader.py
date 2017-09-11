@@ -46,7 +46,7 @@ def read_and_decode(filename, batch_size):
 
 def read_jpg_decode(filename, batch_size=None, data_format="channels_last"):
     """
-    读取图片,并生成图像和标签张量
+    读取文件名为****_**.jpg的图片,并生成图像和标签张量
     :param filename:        图片文件所在文件夹的路径,必须在本文件所在同一级的目录之内,图片文件必须都以图片标签为文件名
                             filename例:"/tidy_id_code/small/",注意文件夹前后必须加上‘/’
     :param batch_size:      读取的文件数目
@@ -62,7 +62,7 @@ def read_jpg_decode(filename, batch_size=None, data_format="channels_last"):
         y_list = []
         path = os.getcwd() + filename
         for img_name in os.listdir(path):
-            re_label = re.compile(".\w+$")
+            re_label = re.compile("_\d+.\w+$")
             label = re_label.sub("", img_name)
             label_array = num_encoder(label)
             img_2 = Image.open(path + img_name)
@@ -77,7 +77,7 @@ def read_jpg_decode(filename, batch_size=None, data_format="channels_last"):
 
 def get_code_decode(data_format="channels_last"):
     """
-    获取图形验证码流和验证码信息
+    获取单条图形验证码流和验证码信息,用于测试模型
     :param data_format:     字符串,为‘channels_first’或‘channels_last’,代表图像的通道维位置
                             默认为‘channels_last’,数据应该组织为(128, 128, 3)
     :return:                图像numpy array和标签
@@ -89,3 +89,19 @@ def get_code_decode(data_format="channels_last"):
     if data_format == "channels_last":
         img_array = img_array.transpose((0, 2, 3, 1))
     return img_array, res.headers["code"]
+
+
+def get_batch_code(batch_size=32, data_format="channels_last"):
+    x_list = []
+    y_list = []
+    for batch in range(batch_size):
+        res = get_code()
+        img = Image.open(BytesIO(res.content))
+        label_array = num_encoder(res.headers["code"])
+        img_array = np.array(img)
+        img_array = np.reshape(img_array, (1, 60, 120))
+        if data_format == "channels_last":
+            img_array = img_array.transpose((1, 2, 0))
+        x_list.append(img_array)
+        y_list.append(label_array)
+    return np.array(x_list), np.array(y_list)

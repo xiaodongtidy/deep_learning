@@ -20,16 +20,6 @@ img_train = img_train.astype("float32")
 img_test = img_test.astype("float32")
 img_validate = img_validate.astype("float32")
 
-# 数据增强
-# data_gen = ImageDataGenerator(
-#     featurewise_center=True,
-#     featurewise_std_normalization=True,
-#     rotation_range=20,
-#     width_shift_range=0.2,
-#     height_shift_range=0.2,
-#     horizontal_flip=True
-# )
-# data_gen.fit(img_train)
 
 # 建立模型
 input_img = Input(shape=(60, 120, 1))
@@ -51,6 +41,7 @@ model.compile(
     loss="binary_crossentropy",
     metrics=["accuracy"]
 )
+
 # 开始训练
 model.fit(
     img_train,
@@ -60,13 +51,6 @@ model.fit(
     validation_data=(img_validate, label_validate),
     callbacks=[TensorBoard(log_dir="logs", write_graph=False, write_images=True)]
 )
-
-# model.fit_generator(
-#     data_gen.flow(img_train, label_train, batch_size=10),
-#     steps_per_epoch=500,
-#     epochs=5,
-#     validation_data=(img_validate, label_validate)
-# )
 
 test_cost = model.evaluate(img_test, label_test, batch_size=100)
 print("Test cost is ", test_cost)

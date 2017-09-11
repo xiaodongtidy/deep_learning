@@ -6,7 +6,7 @@ import numpy as np
 def num_encoder(text):
     """
     将4位数字标签文本转化成向量
-    :param text:            数字字符
+    :param text:            数字字符,string
     :return:                转化后的numpy array,数据类型为int
     """
     if len(text) > 4:
