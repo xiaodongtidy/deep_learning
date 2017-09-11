@@ -11,10 +11,10 @@ img_test = img_test.astype("float32")
 label_test = label_test.astype("int16")
 
 # 读取模型
-model = load_model("logs/cnn_rmsprop_model.h5")
+model = load_model("logs/cnn_rmsprop_model_2.h5")
 
 # 读取模型权重
-model.load_weights("logs/cnn_rmsprop_weights.h5")
+model.load_weights("logs/cnn_rmsprop_weights_2.h5")
 
 # 测试模型
 pred_test = model.predict(img_test, batch_size=2, verbose=1)

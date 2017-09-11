@@ -46,7 +46,7 @@ model.compile(
 model.fit(
     img_train,
     label_train,
-    batch_size=100,
+    batch_size=256,
     epochs=50,
     validation_data=(img_validate, label_validate),
     callbacks=[TensorBoard(log_dir="logs", write_graph=False, write_images=True)]
@@ -56,7 +56,7 @@ test_cost = model.evaluate(img_test, label_test, batch_size=100)
 print("Test cost is ", test_cost)
 
 # 保存模型结构
-model.save("logs/cnn_rmsprop_model.h5")
+model.save("logs/cnn_rmsprop_model_2.h5")
 
 # 保存模型权重
-model.save_weights("logs/cnn_rmsprop_weights.h5")
+model.save_weights("logs/cnn_rmsprop_weights_2.h5")

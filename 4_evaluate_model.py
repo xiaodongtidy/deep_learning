@@ -6,10 +6,10 @@ from encoder_decoder import num_decoder
 
 
 # 读取模型
-model = load_model("logs/cnn_rmsprop_model.h5")
+model = load_model("logs/cnn_rmsprop_model_2.h5")
 
 # 读取模型权重
-model.load_weights("logs/cnn_rmsprop_weights.h5")
+model.load_weights("logs/cnn_rmsprop_weights_2.h5")
 
 # 测试模型
 error = 0

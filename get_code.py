@@ -31,7 +31,8 @@ def save_code(num):
     get_code_url = "https://h5dev.24tidy.com/action/verifyCode.php"
     for s in range(num):
         res = requests.get(get_code_url, stream=True)
-        with open("C:/Users/nengwen.tan/Desktop/train/{0}_{1}.jpg".format(res.headers["code"], s), "wb") as f:
+        with open("D:/program/deep_learning/tidy_id_code/test/{0}_{1}.jpg".format(
+                res.headers["code"], s), "wb") as f:
             for i in res.iter_content(chunk_size=1024):
                 if i:
                     f.write(i)
