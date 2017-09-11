@@ -7,4 +7,6 @@
 
 *   4_evaluate_model: 动态获取验证码评估模型.
 
+*   5_train_on_batch: 支持通过指定的batch对模型进行训练.
+
 *   my_dataset: 保存tfrecords格式的数据,供TensorFlow使用.
