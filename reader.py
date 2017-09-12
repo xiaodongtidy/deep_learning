@@ -97,7 +97,7 @@ def get_batch_code(batch_size=32, data_format="channels_last"):
     :param batch_size:      批次大小
     :param data_format:     字符串,为‘channels_first’或‘channels_last’,代表图像的通道维位置
                             默认为‘channels_last’,数据应该组织为(128, 128, 3)
-    :return:                形如(batch_size, 60, 120)的图像张量和(batch_size, 40)的标签张量
+    :return:                形如(batch_size, 60, 120, 1)的图像张量和(batch_size, 40)的标签张量
     """
     x_list = []
     y_list = []
